@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -42,12 +44,20 @@ class AMapFlutterLocation {
   ///初始化
   AMapFlutterLocation() {
     _pluginKey = DateTime.now().millisecondsSinceEpoch.toString();
+    if (kIsWeb) {}
   }
 
   ///开始定位
-  void startLocation() {
-    _methodChannel.invokeMethod('startLocation', {'pluginKey': _pluginKey});
-    return;
+  Future<void> startLocation() async {
+    if (kIsWeb) {
+      final LinkedHashMap result =
+          await _methodChannel.invokeMethod('startLocation');
+      final Map<String, Object> newResult = jsonDecode(jsonEncode(result));
+      _receiveStream.add(newResult);
+    } else {
+      _methodChannel.invokeMethod('startLocation', {'pluginKey': _pluginKey});
+      return;
+    }
   }
 
   ///停止定位
@@ -131,10 +141,11 @@ class AMapFlutterLocation {
   ///
   /// `errorInfo`: 错误信息， 当定位失败时才会返回
   ///
-  Future onLocationChanged() async {
+  onLocationChanged() {
     if (kIsWeb) {
-      final x = await _methodChannel.invokeMethod('onLocationChanged');
-      return x;
+      _receiveStream = StreamController();
+      // _methodChannel.invokeListMethod('onLocationChanged', [_receiveStream]);
+      return _receiveStream.stream;
     } else {
       if (_receiveStream == null) {
         _receiveStream = StreamController();
@@ -148,6 +159,23 @@ class AMapFlutterLocation {
       }
       return _receiveStream.stream;
     }
+  }
+
+  Future onLocationChanged2() async {
+    // if (_receiveStream == null) {
+    final receiveStream = StreamController<Map<String, Object>>();
+    //   _subscription = _onLocationChanged.listen((Map<String, Object> event) {
+    //     if (event != null && event['pluginKey'] == _pluginKey) {
+    //       Map<String, Object> newEvent = Map<String, Object>.of(event);
+    //       newEvent.remove('pluginKey');
+    //       _receiveStream.add(newEvent);
+    //     }
+    //   });
+    // }
+    receiveStream.add({'x': 1});
+    final x = receiveStream.stream;
+    print(x);
+    return x;
   }
   // Stream<Map<String, Object>> onLocationChanged() {
   //   if (_receiveStream == null) {

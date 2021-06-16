@@ -35,17 +35,25 @@ class _MyAppState extends State<MyApp> {
     AMapFlutterLocation.setApiKey(
         "1dbf56e2e8a4d0e4cdc2df9efd36bc71", "dfb64c0463cb53927914364b5c09aba0");
 
-    // ///iOS 获取native精度类型
+    ///iOS 获取native精度类型
     // if (Platform.isIOS) {
     //   requestAccuracyAuthorization();
     // }
-    // listen();
+
+    ///注册定位结果监听
+    _locationListener = _locationPlugin
+        .onLocationChanged()
+        .listen((Map<String, Object> result) {
+      setState(() {
+        _locationResult = result;
+      });
+    });
   }
 
-  ///注册定位结果监听
+  // ///注册定位结果监听
   Future listen() async {
     final s = await _locationPlugin.onLocationChanged();
-    _locationListener = s.listen((Map<String, Object> result) {
+    _locationListener = s.listen((result) {
       setState(() {
         print(result);
         _locationResult = result;
@@ -54,8 +62,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
 
     ///移除定位监听
     if (null != _locationListener) {
@@ -67,6 +76,21 @@ class _MyAppState extends State<MyApp> {
       _locationPlugin.destroy();
     }
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+
+  //   ///移除定位监听
+  //   if (null != _locationListener) {
+  //     _locationListener.cancel();
+  //   }
+
+  //   ///销毁定位
+  //   if (null != _locationPlugin) {
+  //     _locationPlugin.destroy();
+  //   }
+  // }
 
   ///设置定位参数
   void _setLocationOption() {
@@ -199,7 +223,7 @@ class _MyAppState extends State<MyApp> {
         widgets.add(_resultWidget(key, value));
       });
     }
-    widgets.add(test());
+    // widgets.add(test());
 
     return new MaterialApp(
         home: new Scaffold(
