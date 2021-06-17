@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amap_flutter_location/amap_flutter_location.dart';
 import 'package:amap_flutter_location/amap_location_option.dart';
@@ -26,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     /// 动态申请定位权限
-    // requestPermission();
+    requestPermission();
 
     ///设置Android和iOS的apiKey<br>
     ///key的申请请参考高德开放平台官网说明<br>
@@ -36,26 +37,15 @@ class _MyAppState extends State<MyApp> {
         "1dbf56e2e8a4d0e4cdc2df9efd36bc71", "dfb64c0463cb53927914364b5c09aba0");
 
     ///iOS 获取native精度类型
-    // if (Platform.isIOS) {
-    //   requestAccuracyAuthorization();
-    // }
+    if (!kIsWeb && Platform.isIOS) {
+      requestAccuracyAuthorization();
+    }
 
     ///注册定位结果监听
     _locationListener = _locationPlugin
         .onLocationChanged()
         .listen((Map<String, Object> result) {
       setState(() {
-        _locationResult = result;
-      });
-    });
-  }
-
-  // ///注册定位结果监听
-  Future listen() async {
-    final s = await _locationPlugin.onLocationChanged();
-    _locationListener = s.listen((result) {
-      setState(() {
-        print(result);
         _locationResult = result;
       });
     });
@@ -255,6 +245,8 @@ class _MyAppState extends State<MyApp> {
 
   /// 动态申请定位权限
   void requestPermission() async {
+    if (kIsWeb) return;
+
     // 申请权限
     bool hasLocationPermission = await requestLocationPermission();
     if (hasLocationPermission) {

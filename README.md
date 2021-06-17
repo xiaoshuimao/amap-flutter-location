@@ -1,13 +1,26 @@
 ##  前述 
 
 1. 高德定位Flutter插件
-2. 登录[高德开放平台官网](https://lbs.amap.com/api/)分别申请[Android端](https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key/)和[iOS端](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key)的key
-3. 如需了解高德定位SDK的相关功能，请参阅[Android定位SDK开发指南](https://lbs.amap.com/api/android-location-sdk/locationsummary/)和[iOS定位SDK开发指南](https://lbs.amap.com/api/ios-location-sdk/summary/)
+2. 登录[高德开放平台官网](https://lbs.amap.com/api/)分别申请各个平台的key:
+[Android端](https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key/)
+[iOS端](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key)
+[web客户端](https://lbs.amap.com/api/javascript-api/guide/abc/prepare)
+3. 如需了解高德定位SDK的相关功能，请参阅
+[Android定位SDK开发指南](https://lbs.amap.com/api/android-location-sdk/locationsummary/)
+[iOS定位SDK开发指南](https://lbs.amap.com/api/ios-location-sdk/summary/)
+[web客户端定位](https://lbs.amap.com/api/javascript-api/guide/services/geolocation/)
 
 
 ## 使用高德定位Flutter插件
 * 请参考[在Flutter里使用Packages](https://flutter.cn/docs/development/packages-and-plugins/using-packages)， 引入amap_flutter_location插件
-* 引入高德定位SDK，Android平台请参考[Android Sudio配置工程](https://lbs.amap.com/api/android-location-sdk/guide/create-project/android-studio-create-project), iOS平台请参考[ios安装定位SDK](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/cocoapods)
+* 引入高德定位SDK，
+Android平台请参考[Android Sudio配置工程](https://lbs.amap.com/api/android-location-sdk/guide/create-project/android-studio-create-project), 
+iOS平台请参考[ios安装定位SDK](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/cocoapods)
+web客户端在index.html自行加
+```html
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script>
+```
+
 
 ### 常见问题：
 1、[在iOS设备上运行或者运行iOS工程遇到： `Invalid `Podfile` file: cannot load such file - /flutter/packages/flutter_tools/bin/podhelper`](https://github.com/flutter/flutter/issues/59522)

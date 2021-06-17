@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
-import 'dart:convert';
 // In order to *not* need this ignore, consider extracting the "web" version
 // of your plugin as a separate package, instead of inlining it in the same
 // package as the core of your plugin.
@@ -25,21 +23,6 @@ class AmapFlutterLocationWeb {
     channel.setMethodCallHandler(pluginInstance.handleMethodCall);
   }
 
-  // StreamController<Map<String, Object>> _receiveStream;
-  // StreamSubscription<Map<String, Object>> _subscription;
-  // static const String _CHANNEL_STREAM_LOCATION = "amap_flutter_location_stream";
-  // static const EventChannel _eventChannel =
-  //     const EventChannel(_CHANNEL_STREAM_LOCATION);
-  late String _pluginKey;
-  // static Stream<Map<String, Object>> _onLocationChanged = _eventChannel
-  //     .receiveBroadcastStream()
-  //     .asBroadcastStream()
-  //     .map<Map<String, Object>>((element) => element.cast<String, Object>());
-
-  AmapFlutterLocationWeb() {
-    _pluginKey = DateTime.now().millisecondsSinceEpoch.toString();
-  }
-
   /// Handles method calls over the MethodChannel of this plugin.
   /// Note: Check the "federated" architecture for a new way of doing this:
   /// https://flutter.dev/go/federated-plugins
@@ -51,6 +34,10 @@ class AmapFlutterLocationWeb {
         return setApiKey();
       case 'startLocation':
         return startLocation();
+      case 'stopLocation':
+        return stopLocation();
+      case 'destroy':
+        return destroy();
       default:
         throw PlatformException(
           code: 'Unimplemented',
@@ -71,24 +58,45 @@ class AmapFlutterLocationWeb {
         'web端在index.html自行加<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script>');
   }
 
+  stopLocation() {
+    print('web端stopLocation');
+  }
+
+  destroy() {
+    print('web端destroy');
+  }
+
   ///开始定位
-  Future<Map<String, Object>> startLocation() async {
+  Future startLocation() async {
+    Completer _completer = Completer();
     AMap.plugin('AMap.Geolocation', () {
-      print(AMap.Geolocation().getCurrentPosition);
-      // final x =
-      //     AMap.Geolocation(AMap.GeolocationOptions(enableHighAccuracy: true));
-      // x.getCurrentPosition((status) {
-      //   print(1);
-      //   print(status);
-      // });
-      //AMap.Geolocation().getCurrentPosition((status, result) {});
+      final geolocation =
+          AMap.Geolocation(AMap.GeolocationOptions(enableHighAccuracy: true));
+      geolocation.getCurrentPosition(allowInterop((status, result) {
+        final date = DateTime.now();
+        final mapResult = {
+          'callbackTime':
+              '${date.year}-${date.month < 10 ? '0${date.month}' : date.month}-${date.day < 10 ? '0${date.day}' : date.day} ${date.hour < 10 ? '0${date.hour}' : date.hour}:${date.minute < 10 ? '0${date.minute}' : date.minute}:${date.second < 10 ? '0${date.second}' : date.second}',
+          'info': result.info,
+          'message': result.message,
+          'accuracy': result.accuracy,
+          'location_type': result.location_type,
+          'latitude': result.position?.lat,
+          'longitude': result.position?.lng,
+          "country": result.addressComponent?.country,
+          "province": result.addressComponent?.province,
+          "city": result.addressComponent?.city,
+          "district": result.addressComponent?.district,
+          "street": result.addressComponent?.street,
+          "streetNumber": result.addressComponent?.streetNumber,
+          "cityCode": result.addressComponent?.citycode,
+          "adCode": result.addressComponent?.adcode,
+          "address": result.formattedAddress,
+        };
+        _completer.complete(mapResult);
+      }));
     });
 
-    return {};
+    return _completer.future;
   }
-}
-
-class X {
-  X(this.x);
-  int x;
 }
