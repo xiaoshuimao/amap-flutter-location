@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
   void _startLocation() {
     if (null != _locationPlugin) {
       ///开始定位之前设置定位参数
-      // _setLocationOption();
+      _setLocationOption();
       _locationPlugin.startLocation();
     }
   }

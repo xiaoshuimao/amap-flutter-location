@@ -30,6 +30,8 @@ class AmapFlutterLocationWeb {
     switch (call.method) {
       case 'getPlatformVersion':
         return getPlatformVersion();
+      case 'setLocationOption':
+        return setLocationOption();
       case 'setApiKey':
         return setApiKey();
       case 'startLocation':
@@ -51,6 +53,10 @@ class AmapFlutterLocationWeb {
   Future<String> getPlatformVersion() {
     final version = html.window.navigator.userAgent;
     return Future.value(version);
+  }
+
+  setLocationOption() {
+    print('web端setLocationOption');
   }
 
   setApiKey() {
