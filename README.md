@@ -18,11 +18,15 @@
 * 引入高德定位SDK，
 Android平台请参考[Android Sudio配置工程](https://lbs.amap.com/api/android-location-sdk/guide/create-project/android-studio-create-project), 
 iOS平台请参考[ios安装定位SDK](https://lbs.amap.com/api/ios-location-sdk/guide/create-project/cocoapods)
-web客户端在index.html自行加
+web客户端在index.html自行添加 
 ```html
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script>
+<script src="https://webapi.amap.com/loader.js"></script>
+<!--异步加载方案js https://lbs.amap.com/api/jsapi-v2/guide/abc/load/ -->
 ```
 
+
+### demo
+参考项目中 example 目录
 
 ### 常见问题：
 1、[在iOS设备上运行或者运行iOS工程遇到： `Invalid `Podfile` file: cannot load such file - /flutter/packages/flutter_tools/bin/podhelper`](https://github.com/flutter/flutter/issues/59522)
