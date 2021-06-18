@@ -75,7 +75,7 @@ class AmapFlutterLocationWeb {
   ///开始定位
   Future startLocation() async {
     Completer _completer = Completer();
-    AMap.plugin('AMap.Geolocation', () {
+    AMap.plugin('AMap.Geolocation', allowInterop(() {
       final geolocation =
           AMap.Geolocation(AMap.GeolocationOptions(enableHighAccuracy: true));
       geolocation.getCurrentPosition(allowInterop((status, result) {
@@ -101,7 +101,7 @@ class AmapFlutterLocationWeb {
         };
         _completer.complete(mapResult);
       }));
-    });
+    }));
 
     return _completer.future;
   }
