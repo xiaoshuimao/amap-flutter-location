@@ -13,20 +13,27 @@
 //             });
 //         });
 
-@JS('AMap')
+@JS()
 library amap;
 
 import 'package:js/js.dart';
 
-/// 版本号
-external int get v;
+@JS('AMap')
+external dynamic aMap;
 
-/// plugin方法
-external Function(dynamic name, void Function() callback) plugin;
+@JS()
+@anonymous
+class MyAMap {
+  /// plugin方法
+  external Function(dynamic name, void Function() callback) plugin;
+
+  /// 版本号
+  external int get v;
+}
 
 ///  定位
 /// https://lbs.amap.com/api/javascript-api/reference/location#m_AMap.Geolocation
-@JS('Geolocation')
+@JS('AMap.Geolocation')
 class Geolocation {
   external Geolocation(GeolocationOptions? options);
 
@@ -103,3 +110,5 @@ class AddressComponent {
   external String get citycode;
   external String get adcode;
 }
+
+class X {}

@@ -33,8 +33,8 @@ class _MyAppState extends State<MyApp> {
     ///key的申请请参考高德开放平台官网说明<br>
     ///Android: https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key
     ///iOS: https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key
-    AMapFlutterLocation.setApiKey(
-        "1dbf56e2e8a4d0e4cdc2df9efd36bc71", "dfb64c0463cb53927914364b5c09aba0");
+    AMapFlutterLocation.setApiKey("1dbf56e2e8a4d0e4cdc2df9efd36bc71",
+        "dfb64c0463cb53927914364b5c09aba0", "b09c1cea422c208142f8f73b376726a8");
 
     ///iOS 获取native精度类型
     if (!kIsWeb && Platform.isIOS) {

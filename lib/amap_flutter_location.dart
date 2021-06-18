@@ -70,11 +70,15 @@ class AMapFlutterLocation {
   ///apiKey的申请请参考高德开放平台官网<br>
   ///Android端: https://lbs.amap.com/api/android-location-sdk/guide/create-project/get-key<br>
   ///iOS端: https://lbs.amap.com/api/ios-location-sdk/guide/create-project/get-key<br>
+  ///web端: https://lbs.amap.com/api/javascript-api/guide/abc/prepare<br>
   ///[androidKey] Android平台的key<br>
   ///[iosKey] ios平台的key<br>
-  static void setApiKey(String androidKey, String iosKey) {
-    _methodChannel
-        .invokeMethod('setApiKey', {'android': androidKey, 'ios': iosKey});
+  static void setApiKey(String androidKey, String iosKey, String webKey) {
+    _methodChannel.invokeMethod('setApiKey', {
+      'android': androidKey,
+      'ios': iosKey,
+      'web': webKey,
+    });
   }
 
   /// 设置定位参数
@@ -159,23 +163,6 @@ class AMapFlutterLocation {
       }
       return _receiveStream!.stream;
     }
-  }
-
-  Future onLocationChanged2() async {
-    // if (_receiveStream == null) {
-    final receiveStream = StreamController<Map<String, Object>>();
-    //   _subscription = _onLocationChanged.listen((Map<String, Object> event) {
-    //     if (event != null && event['pluginKey'] == _pluginKey) {
-    //       Map<String, Object> newEvent = Map<String, Object>.of(event);
-    //       newEvent.remove('pluginKey');
-    //       _receiveStream.add(newEvent);
-    //     }
-    //   });
-    // }
-    receiveStream.add({'x': 1});
-    final x = receiveStream.stream;
-    print(x);
-    return x;
   }
   // Stream<Map<String, Object>> onLocationChanged() {
   //   if (_receiveStream == null) {
